@@ -1,5 +1,3 @@
-const { NotImplementedError } = require('../extensions/index.js');
-
 /**
  * In the popular Minesweeper game you have a board with some mines and those cells
  * that don't contain a mine have a number in it that indicates the total number of mines
@@ -23,9 +21,56 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function minesweeper(matrix) {
+  let matrixSizeY = matrix.length;
+  let matrixSizeX = matrix[0].length;
+
+  let map = [...(new Array(matrixSizeY))].map(() => {
+    return new Array(matrixSizeX).fill(0);
+  })
+
+  return matrix.reduce((acc, row, indexY) => {
+    row.forEach((mine, indexX) => {
+      if (mine) {
+        if (indexY - 1 >= 0) {
+          if (acc[indexY - 1][indexX - 1] !== undefined) {
+            acc[indexY - 1][indexX - 1]++;
+          }
+          if (acc[indexY - 1][indexX] !== undefined) {
+            acc[indexY - 1][indexX]++;
+          }
+          if (acc[indexY - 1][indexX + 1] !== undefined) {
+            acc[indexY - 1][indexX + 1]++;
+          }
+        }
+        if (indexY + 1 <= matrixSizeY) {
+          if (acc[indexY + 1][indexX - 1] !== undefined) {
+            acc[indexY + 1][indexX - 1]++;
+          }
+          if (acc[indexY + 1][indexX] !== undefined) {
+            acc[indexY + 1][indexX]++;
+          }
+          if (acc[indexY + 1][indexX + 1] !== undefined) {
+            acc[indexY + 1][indexX + 1]++;
+          }
+        }
+
+        if (indexX - 1 >= 0) {
+          if (acc[indexY][indexX - 1] !== undefined) {
+            acc[indexY][indexX - 1]++;
+          }
+        }
+
+        if (indexX + 1 <= matrixSizeX) {
+          if (acc[indexY][indexX + 1] !== undefined) {
+            acc[indexY][indexX + 1] += 1;
+          }
+        }
+      }
+    })
+
+    return acc
+  }, map)
 }
 
 module.exports = {
